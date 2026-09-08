@@ -27,24 +27,24 @@ O dataset mistura duas convenções de nome de arquivo:
 
 - **`GS_1160_2.jpg`** (prefixo + ID da vaca + número do frame) — permite
   agrupar com segurança todos os frames da mesma vaca
-- **`L-i5494.jpg`** (prefixo + índice sequencial) — **não** contém ID de
+- **`L-i5494.jpg`** (prefixo + índice sequencial) — não contém ID de
   vaca explícito
 
 Com ~9-10 imagens por vaca, um split aleatório por imagem correria o
-risco de colocar frames quase idênticos da mesma vaca em treino **e**
+risco de colocar frames quase idênticos da mesma vaca em treino e
 em validação/teste — inflando artificialmente a métrica de validação
 sem generalização real.
 
-### A tentativa de correção que também falhou
+### A tentativa de correção
 
 A primeira hipótese pra agrupar os arquivos do segundo padrão foi
-**clustering por gap**: números em sequência com saltos pequenos
+clustering por gap: números em sequência com saltos pequenos
 seriam a mesma vaca; saltos grandes marcariam troca de vaca. A
 distribuição real de gaps (94% dos gaps = 1, indicando bom sinal)
 sustentou essa hipótese inicialmente.
 
 A validação, porém, revelou um grupo de 377 imagens com o valor de BCS
-**alternando** entre 3.75, 4.00 e 4.25 dentro do mesmo grupo — algo
+alternando entre 3.75, 4.00 e 4.25 dentro do mesmo grupo — algo
 fisiologicamente impossível para uma única vaca. Isso provou que a
 numeração sequencial não separa vacas de forma confiável em todos os
 casos: vacas diferentes, por coincidência, tinham numeração próxima o
@@ -57,7 +57,7 @@ agrupamento:
 
 | Origem do dado | Uso |
 |---|---|
-| ID de vaca explícito no nome (`reliable_group = True`) | Treino, validação **e** teste |
+| ID de vaca explícito no nome (`reliable_group = True`) | Treino, validação e teste |
 | Sem ID confiável (`reliable_group = False`) | Só treino |
 
 Isso preserva 100% do volume de dado disponível, sem sacrificar a
@@ -96,7 +96,7 @@ Notebook: [`01_treino_bcs.ipynb`](01_treino_bcs.ipynb)
 
 O modelo aprende sinal real da imagem (supera a baseline ingênua), mas
 apresenta um viés claro: erro nas classes extremas (3.25 e 4.25) é
-cerca do **dobro** do erro nas classes centrais — o modelo tende a
+cerca do dobro do erro nas classes centrais — o modelo tende a
 "comprimir" suas predições em direção à classe majoritária (3.75, a
 mais frequente no dataset).
 
@@ -112,7 +112,7 @@ mais frequente no dataset).
 O resultado deste projeto está abaixo dos sistemas publicados, mas
 usando uma abordagem estruturalmente mais simples (imagem 2D única,
 regressão direta, sem profundidade/3D) e um volume de anotação bem
-menor — a diferença é consistente com essas limitações, não um
+menor. A diferença é consistente com essas limitações, não um
 indicativo de erro de implementação.
 
 ## Correção de desbalanceamento (retreino)
@@ -139,10 +139,6 @@ evidência mais forte do que um experimento isolado teria dado: o fator
 limitante provavelmente é volume de dado nas classes extremas, não
 a estratégia de otimização escolhida. Corrigir isso exigiria mais dado
 anotado nessas classes, não um ajuste adicional de hiperparâmetro.
-
-O modelo **v2** foi escolhido como versão de produção, por ter o
-melhor equilíbrio entre MAE geral e tolerância. O v3 permanece
-documentado como experimento que reforçou o diagnóstico.
 
 ## Limitações conhecidas
 
