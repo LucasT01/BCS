@@ -66,7 +66,7 @@ exclusivamente sobre dado com garantia de não-vazamento.
 
 ## Enquadramento do problema
 
-**Regressão**, não classificação — apesar do dataset ter só 5 valores
+Regressão — apesar do dataset ter só 5 valores
 discretos de rótulo. BCS é uma escala ordinal contínua por natureza
 (avaliadores humanos atribuem valores como 3.25 ou 3.5), e regressão
 captura essa ordem naturalmente: um erro entre classes vizinhas é
