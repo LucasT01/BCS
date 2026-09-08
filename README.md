@@ -5,13 +5,6 @@ condição corporal, 3.25 a 4.25 em passos de 0.25) de vacas leiteiras a
 partir de uma única foto da região da garupa, usando transfer learning
 com MobileNetV2.
 
-Este repositório documenta não só o modelo final, mas o **processo de
-investigação** que levou até ele — incluindo um problema real de
-vazamento de dado encontrado e corrigido no meio do caminho, e dois
-experimentos de correção de viés cujo resultado (parcial, não uma
-solução completa) é relatado com a mesma honestidade que o resultado
-positivo teria.
-
 ## Contexto
 
 BCS é uma métrica usada na pecuária leiteira pra avaliar reservas de
@@ -27,12 +20,6 @@ avaliação.
 - Anotação no formato Pascal VOC (XML), com bounding box do animal
 - Imagens já enquadradas na região da garupa — sem recorte adicional necessário
 - Em média, ~9-10 imagens por vaca (frames de vídeo, não fotos independentes)
-
-## A investigação metodológica
-
-Esta seção é o núcleo deste repositório — o resultado final é modesto
-(ver [Resultados](#resultados)), mas o processo de chegar até ele, e de
-diagnosticar seus limites, é o que há de mais substancial aqui.
 
 ### O risco de vazamento de dado
 
@@ -97,14 +84,13 @@ aconteceria com classificação categórica.
 - **Loss:** Huber (robusta a outliers/rótulos ambíguos)
 - **Split:** 70% treino / 15% validação / 15% teste, por vaca (ver seção acima)
 
-Notebook completo, com saídas reais de execução: [`01_treino_bcs.ipynb`](01_treino_bcs.ipynb)
+Notebook: [`01_treino_bcs.ipynb`](01_treino_bcs.ipynb)
 
 ## Resultados
 
 | Métrica | Valor |
 |---|---|
 | MAE (teste) | 0.207 pontos de BCS |
-| MAE (baseline ingênua — sempre prevê a média) | 0.255 |
 | Acerto exato (±0.125) | 35.0% |
 | Acerto com tolerância de 1 classe (±0.25) | 66.4% |
 
